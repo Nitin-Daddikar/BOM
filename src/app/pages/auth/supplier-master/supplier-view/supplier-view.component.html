@@ -1,0 +1,70 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>Supplier Details</h5>
+        <div class="button-group">
+            <button type="button" class="btn btn-primary" (click)="goBack()">
+                <i class="feather icon-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" [routerLink]="['../../form/' + supplier?.id]">
+                <i class="feather icon-edit"></i> Edit
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div *ngIf="loading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && supplier">
+            <div class="row">
+                <!-- Supplier Information -->
+                <div class="col-md-8 mb-4">
+                    <h6 class="mb-3">Supplier Information</h6>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="30%">Supplier ID</th>
+                                <td>{{ supplier.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ supplier.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Lead Time</th>
+                                <td>{{ supplier.lead_time }}</td>
+                            </tr>
+                            <tr>
+                                <th>MOQ</th>
+                                <td>{{ supplier.moq }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="col-md-4 mb-4">
+                    <h6 class="mb-3">Timestamps</h6>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="40%">Created At</th>
+                                <td>{{ supplier.created_at | date:'medium' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Last Updated</th>
+                                <td>{{ supplier.updated_at | date:'medium' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && !supplier" class="text-center">
+            <p class="text-muted">Supplier not found</p>
+        </div>
+    </div>
+</div>

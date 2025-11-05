@@ -1,0 +1,103 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Supplier List</h5>
+        <div class="card-header-right">
+            <button class="btn btn-primary" [routerLink]="['form/new']">
+                <i class="feather icon-plus"></i> Add New Supplier
+            </button>
+        </div>
+    </div>
+    <div class="card-body table-border-style p-0">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Action</th>
+                        <th>
+                            <a (click)="sort('name')"> Name
+                                <span *ngIf="key =='name'" class="{{class}}"> </span>
+                            </a>
+                        </th>
+                        <th>
+                            <a (click)="sort('lead_time')"> Lead Time
+                                <span *ngIf="key =='lead_time'" class="{{class}}"> </span>
+                            </a>
+                        </th>
+                        <th>
+                            <a (click)="sort('moq')"> MOQ
+                                <span *ngIf="key =='moq'" class="{{class}}"> </span>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <a class="primary p-0" data-original-title="" title="Search" (click)="getData()">
+                                <i class="fa fa-search font-medium-1 mr-1"></i>
+                            </a> &nbsp;&nbsp;
+                            <a class="danger p-0" data-original-title="" title="Clear" (click)="getReset()">
+                                <i class="feather icon-x font-medium-1 mr-1"></i>
+                            </a>
+                        </th>
+                        <th><input type="text" [(ngModel)]="search.name" (ngModelChange)="searchNotifier.next()" placeholder="Search name...">
+                        </th>
+                        <th><input type="number" [(ngModel)]="search.lead_time" (ngModelChange)="searchNotifier.next()" placeholder="Search lead time...">
+                        </th>
+                        <th><input type="text" [(ngModel)]="search.moq" (ngModelChange)="searchNotifier.next()" placeholder="Search MOQ...">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="loading">
+                        <td colspan="4" class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="error" class="text-danger">
+                        <td colspan="4" class="text-center">
+                            {{ error }}
+                        </td>
+                    </tr>
+                    <tr *ngFor="let supplier of suppliers   |  paginate: {
+                                                                itemsPerPage: paginationData.per_page,
+                                                                currentPage: paginationData.current_page,
+                                                                totalItems: paginationData.total,
+                                                                id: 'list'
+                                                            }">
+                        <td>
+                            <a class="warning p-0 me-2" title="View" [routerLink]="['view/'+supplier.id]">
+                                <i class="feather icon-eye"></i>
+                            </a>
+                            <a class="warning p-0 me-2" title="Edit" [routerLink]="['form/'+supplier.id]">
+                                <i class="feather icon-edit"></i>
+                            </a>
+                            <a class="warning p-0" title="Delete" (click)="deleteSupplier(supplier.id!)">
+                                <i class="feather icon-trash-2"></i>
+                            </a>
+                        </td>
+                        <td>{{ supplier.name }}</td>
+                        <td>{{ supplier.lead_time }}</td>
+                        <td>{{ supplier.moq }}</td>
+                    </tr>
+                    <tr *ngIf="!loading && !error && suppliers.length === 0">
+                        <td colspan="4" class="text-center">No suppliers found</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center">
+                <div>
+                    Showing {{paginationData.from}} to {{paginationData.to}} of {{paginationData.total}}
+                    Entries
+                </div>
+
+                <div>
+                    <nav>
+                        <pagination-controls id="list" (pageChange)="getData($event)">
+                        </pagination-controls>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

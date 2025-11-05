@@ -1,0 +1,74 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>Purchase Order Details</h5>
+        <div class="button-group">
+            <button type="button" class="btn btn-primary" (click)="goBack()">
+                <i class="feather icon-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" [routerLink]="['../../form/' + purchaseOrder?.id]">
+                <i class="feather icon-edit"></i> Edit
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div *ngIf="loading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && purchaseOrder">
+            <div class="row">
+                <!-- Purchase Order Information -->
+                <div class="col-md-8 mb-4">
+                    <h6 class="mb-3">Purchase Order Information</h6>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="30%">Purchase Order ID</th>
+                                <td>{{ purchaseOrder.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>PO Number</th>
+                                <td>{{ purchaseOrder.po_number }}</td>
+                            </tr>
+                            <tr>
+                                <th>Supplier</th>
+                                <td>{{ purchaseOrder.supplier }}</td>
+                            </tr>
+                            <tr>
+                                <th>Quantity</th>
+                                <td>{{ purchaseOrder.quantity }}</td>
+                            </tr>
+                            <tr>
+                                <th>Due Date</th>
+                                <td>{{ purchaseOrder.due_date | date:'fullDate' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="col-md-4 mb-4">
+                    <h6 class="mb-3">Timestamps</h6>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="40%">Created At</th>
+                                <td>{{ purchaseOrder.created_at | date:'medium' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Last Updated</th>
+                                <td>{{ purchaseOrder.updated_at | date:'medium' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && !purchaseOrder" class="text-center">
+            <p class="text-muted">Purchase order not found</p>
+        </div>
+    </div>
+</div>

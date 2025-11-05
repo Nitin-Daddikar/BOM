@@ -1,0 +1,70 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>Product Details</h5>
+        <div class="button-group">
+            <button type="button" class="btn btn-primary" (click)="goBack()">
+                <i class="feather icon-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" [routerLink]="['../../form/' + product?.id]">
+                <i class="feather icon-edit"></i> Edit
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div *ngIf="loading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && product">
+            <div class="row">
+                <!-- Product Information -->
+                <div class="col-md-8 mb-4">
+                    <h6 class="mb-3">Product Information</h6>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="30%">Product ID</th>
+                                <td>{{ product.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Product Code</th>
+                                <td>{{ product.code }}</td>
+                            </tr>
+                            <tr>
+                                <th>Unit of Measurement (UOM)</th>
+                                <td>{{ product.uom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Category</th>
+                                <td>{{ product.category }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="col-md-4 mb-4">
+                    <h6 class="mb-3">Timestamps</h6>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="40%">Created At</th>
+                                <td>{{ product.created_at | date:'medium' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Last Updated</th>
+                                <td>{{ product.updated_at | date:'medium' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && !product" class="text-center">
+            <p class="text-muted">Product not found</p>
+        </div>
+    </div>
+</div>

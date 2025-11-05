@@ -1,0 +1,115 @@
+<div class="card">
+    <div class="card-header">
+        <h5>{{ isEditing ? 'Edit' : 'Add' }} BOM</h5>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="bomForm" (ngSubmit)="onSubmit()">
+            <div *ngIf="loading" class="text-center mb-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- BOM Information -->
+                <div class="col-md-12">
+                    <h6 class="mb-3">BOM Information</h6>
+                    
+                    <div class="form-group mb-3">
+                        <label class="form-label">FG Code <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="fg_code"
+                            [ngClass]="{'is-invalid': bomForm.get('fg_code')?.touched && bomForm.get('fg_code')?.invalid}">
+                        <div class="invalid-feedback" *ngIf="bomForm.get('fg_code')?.touched && bomForm.get('fg_code')?.invalid">
+                            FG Code is required
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">FG Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="fg_name"
+                            [ngClass]="{'is-invalid': bomForm.get('fg_name')?.touched && bomForm.get('fg_name')?.invalid}">
+                        <div class="invalid-feedback" *ngIf="bomForm.get('fg_name')?.touched && bomForm.get('fg_name')?.invalid">
+                            FG Name is required
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Quantity per FG <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="fg_qty"
+                            [ngClass]="{'is-invalid': bomForm.get('fg_qty')?.touched && bomForm.get('fg_qty')?.invalid}">
+                        <div class="invalid-feedback" *ngIf="bomForm.get('fg_qty')?.touched && bomForm.get('fg_qty')?.invalid">
+                            Quantity per FG is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Components Section -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6>Raw Materials / Components</h6>
+                        <button type="button" class="btn btn-success btn-sm" (click)="addComponent()">
+                            <i class="feather icon-plus"></i> Add Component
+                        </button>
+                    </div>
+                    
+                    <div formArrayName="components">
+                        <div *ngFor="let component of components.controls; let i = index" [formGroupName]="i" class="card mb-3">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-2">
+                                            <label class="form-label">Component Code <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" formControlName="code"
+                                                [ngClass]="{'is-invalid': component.get('code')?.touched && component.get('code')?.invalid}">
+                                            <div class="invalid-feedback" *ngIf="component.get('code')?.touched && component.get('code')?.invalid">
+                                                Component code is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-2">
+                                            <label class="form-label">Component Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" formControlName="name"
+                                                [ngClass]="{'is-invalid': component.get('name')?.touched && component.get('name')?.invalid}">
+                                            <div class="invalid-feedback" *ngIf="component.get('name')?.touched && component.get('name')?.invalid">
+                                                Component name is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group mb-2">
+                                            <label class="form-label">Quantity <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" formControlName="quantity"
+                                                [ngClass]="{'is-invalid': component.get('quantity')?.touched && component.get('quantity')?.invalid}">
+                                            <div class="invalid-feedback" *ngIf="component.get('quantity')?.touched && component.get('quantity')?.invalid">
+                                                Quantity is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <button type="button" class="btn btn-danger btn-sm" (click)="removeComponent(i)">
+                                            <i class="feather icon-trash-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div *ngIf="components.length === 0" class="text-center text-muted py-4">
+                            <p>No components added yet. Click "Add Component" to start building your BOM.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="button" class="btn btn-light me-2" (click)="goBack()">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                    {{ isEditing ? 'Update' : 'Create' }} BOM
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

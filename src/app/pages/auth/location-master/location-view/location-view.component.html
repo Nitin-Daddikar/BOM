@@ -1,0 +1,70 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>Location Details</h5>
+        <div class="button-group">
+            <button type="button" class="btn btn-primary" (click)="goBack()">
+                <i class="feather icon-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" [routerLink]="['../../form/' + location?.id]">
+                <i class="feather icon-edit"></i> Edit
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div *ngIf="loading" class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && location">
+            <div class="row">
+                <!-- Location Information -->
+                <div class="col-md-8 mb-4">
+                    <h6 class="mb-3">Location Information</h6>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="30%">Location ID</th>
+                                <td>{{ location.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ location.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Type</th>
+                                <td>
+                                    <span class="badge" [ngClass]="location.type === 'Plant' ? 'bg-success' : 'bg-info'">
+                                        {{ location.type }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="col-md-4 mb-4">
+                    <h6 class="mb-3">Timestamps</h6>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="40%">Created At</th>
+                                <td>{{ location.created_at | date:'medium' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Last Updated</th>
+                                <td>{{ location.updated_at | date:'medium' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && !location" class="text-center">
+            <p class="text-muted">Location not found</p>
+        </div>
+    </div>
+</div>

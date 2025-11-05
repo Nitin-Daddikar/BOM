@@ -1,0 +1,111 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Purchase Order List</h5>
+        <div class="card-header-right">
+            <button class="btn btn-primary" [routerLink]="['form/new']">
+                <i class="feather icon-plus"></i> Add New Purchase Order
+            </button>
+        </div>
+    </div>
+    <div class="card-body table-border-style p-0">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Action</th>
+                        <th>
+                            <a (click)="sort('po_number')"> PO Number
+                                <span *ngIf="key =='po_number'" class="{{class}}"> </span>
+                            </a>
+                        </th>
+                        <th>
+                            <a (click)="sort('supplier')"> Supplier
+                                <span *ngIf="key =='supplier'" class="{{class}}"> </span>
+                            </a>
+                        </th>
+                        <th>
+                            <a (click)="sort('quantity')"> Quantity
+                                <span *ngIf="key =='quantity'" class="{{class}}"> </span>
+                            </a>
+                        </th>
+                        <th>
+                            <a (click)="sort('due_date')"> Due Date
+                                <span *ngIf="key =='due_date'" class="{{class}}"> </span>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <a class="primary p-0" data-original-title="" title="Search" (click)="getData()">
+                                <i class="fa fa-search font-medium-1 mr-1"></i>
+                            </a> &nbsp;&nbsp;
+                            <a class="danger p-0" data-original-title="" title="Clear" (click)="getReset()">
+                                <i class="feather icon-x font-medium-1 mr-1"></i>
+                            </a>
+                        </th>
+                        <th><input type="text" [(ngModel)]="search.po_number" (ngModelChange)="searchNotifier.next()" placeholder="Search PO number...">
+                        </th>
+                        <th><input type="text" [(ngModel)]="search.supplier" (ngModelChange)="searchNotifier.next()" placeholder="Search supplier...">
+                        </th>
+                        <th><input type="text" [(ngModel)]="search.quantity" (ngModelChange)="searchNotifier.next()" placeholder="Search quantity...">
+                        </th>
+                        <th><input type="date" [(ngModel)]="search.due_date" (ngModelChange)="searchNotifier.next()" placeholder="Search due date...">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="loading">
+                        <td colspan="5" class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="error" class="text-danger">
+                        <td colspan="5" class="text-center">
+                            {{ error }}
+                        </td>
+                    </tr>
+                    <tr *ngFor="let purchaseOrder of purchaseOrders   |  paginate: {
+                                                                itemsPerPage: paginationData.per_page,
+                                                                currentPage: paginationData.current_page,
+                                                                totalItems: paginationData.total,
+                                                                id: 'list'
+                                                            }">
+                        <td>
+                            <a class="warning p-0 me-2" title="View" [routerLink]="['view/'+purchaseOrder.id]">
+                                <i class="feather icon-eye"></i>
+                            </a>
+                            <a class="warning p-0 me-2" title="Edit" [routerLink]="['form/'+purchaseOrder.id]">
+                                <i class="feather icon-edit"></i>
+                            </a>
+                            <a class="warning p-0" title="Delete" (click)="deletePurchaseOrder(purchaseOrder.id!)">
+                                <i class="feather icon-trash-2"></i>
+                            </a>
+                        </td>
+                        <td>{{ purchaseOrder.po_number }}</td>
+                        <td>{{ purchaseOrder.supplier }}</td>
+                        <td>{{ purchaseOrder.quantity }}</td>
+                        <td>{{ purchaseOrder.due_date | date:'shortDate' }}</td>
+                    </tr>
+                    <tr *ngIf="!loading && !error && purchaseOrders.length === 0">
+                        <td colspan="5" class="text-center">No purchase orders found</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center">
+                <div>
+                    Showing {{paginationData.from}} to {{paginationData.to}} of {{paginationData.total}}
+                    Entries
+                </div>
+
+                <div>
+                    <nav>
+                        <pagination-controls id="list" (pageChange)="getData($event)">
+                        </pagination-controls>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

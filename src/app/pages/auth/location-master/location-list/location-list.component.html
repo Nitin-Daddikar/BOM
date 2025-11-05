@@ -1,0 +1,104 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Location List</h5>
+        <div class="card-header-right">
+            <button class="btn btn-primary" [routerLink]="['form/new']">
+                <i class="feather icon-plus"></i> Add New Location
+            </button>
+        </div>
+    </div>
+    <div class="card-body table-border-style p-0">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Action</th>
+                        <th>
+                            <a (click)="sort('name')"> Name
+                                <span *ngIf="key =='name'" class="{{class}}"> </span>
+                            </a>
+                        </th>
+                        <th>
+                            <a (click)="sort('type')"> Type
+                                <span *ngIf="key =='type'" class="{{class}}"> </span>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <a class="primary p-0" data-original-title="" title="Search" (click)="getData()">
+                                <i class="fa fa-search font-medium-1 mr-1"></i>
+                            </a> &nbsp;&nbsp;
+                            <a class="danger p-0" data-original-title="" title="Clear" (click)="getReset()">
+                                <i class="feather icon-x font-medium-1 mr-1"></i>
+                            </a>
+                        </th>
+                        <th><input type="text" [(ngModel)]="search.name" (ngModelChange)="searchNotifier.next()" placeholder="Search name...">
+                        </th>
+                        <th>
+                            <select [(ngModel)]="search.type" (ngModelChange)="searchNotifier.next()" class="form-select">
+                                <option value="">All Types</option>
+                                <option value="Plant">Plant</option>
+                                <option value="Warehouse">Warehouse</option>
+                            </select>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="loading">
+                        <td colspan="3" class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="error" class="text-danger">
+                        <td colspan="3" class="text-center">
+                            {{ error }}
+                        </td>
+                    </tr>
+                    <tr *ngFor="let location of locations   |  paginate: {
+                                                                itemsPerPage: paginationData.per_page,
+                                                                currentPage: paginationData.current_page,
+                                                                totalItems: paginationData.total,
+                                                                id: 'list'
+                                                            }">
+                        <td>
+                            <a class="warning p-0 me-2" title="View" [routerLink]="['view/'+location.id]">
+                                <i class="feather icon-eye"></i>
+                            </a>
+                            <a class="warning p-0 me-2" title="Edit" [routerLink]="['form/'+location.id]">
+                                <i class="feather icon-edit"></i>
+                            </a>
+                            <a class="warning p-0" title="Delete" (click)="deleteLocation(location.id!)">
+                                <i class="feather icon-trash-2"></i>
+                            </a>
+                        </td>
+                        <td>{{ location.name }}</td>
+                        <td>
+                            <span class="badge" [ngClass]="location.type === 'Plant' ? 'bg-success' : 'bg-info'">
+                                {{ location.type }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!loading && !error && locations.length === 0">
+                        <td colspan="3" class="text-center">No locations found</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center">
+                <div>
+                    Showing {{paginationData.from}} to {{paginationData.to}} of {{paginationData.total}}
+                    Entries
+                </div>
+
+                <div>
+                    <nav>
+                        <pagination-controls id="list" (pageChange)="getData($event)">
+                        </pagination-controls>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

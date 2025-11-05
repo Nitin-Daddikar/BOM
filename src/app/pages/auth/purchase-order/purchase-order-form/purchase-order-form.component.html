@@ -1,0 +1,69 @@
+<div class="card">
+    <div class="card-header">
+        <h5>{{ isEditing ? 'Edit' : 'Add' }} Purchase Order</h5>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="purchaseOrderForm" (ngSubmit)="onSubmit()">
+            <div *ngIf="loading" class="text-center mb-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Purchase Order Information -->
+                <div class="col-md-12">
+                    <h6 class="mb-3">Purchase Order Information</h6>
+                    
+                    <div class="form-group mb-3">
+                        <label class="form-label">PO Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="po_number"
+                            [ngClass]="{'is-invalid': purchaseOrderForm.get('po_number')?.touched && purchaseOrderForm.get('po_number')?.invalid}">
+                        <div class="invalid-feedback" *ngIf="purchaseOrderForm.get('po_number')?.touched && purchaseOrderForm.get('po_number')?.invalid">
+                            PO Number is required
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Supplier <span class="text-danger">*</span></label>
+                        <select class="form-control" formControlName="supplier"
+                            [ngClass]="{'is-invalid': purchaseOrderForm.get('supplier')?.touched && purchaseOrderForm.get('supplier')?.invalid}">
+                            <option value="">Select Supplier</option>
+                            <option *ngFor="let supplier of supplierOptions" [value]="supplier">
+                                {{ supplier }}
+                            </option>
+                        </select>
+                        <div class="invalid-feedback" *ngIf="purchaseOrderForm.get('supplier')?.touched && purchaseOrderForm.get('supplier')?.invalid">
+                            Supplier is required
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Quantity <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="quantity"
+                            [ngClass]="{'is-invalid': purchaseOrderForm.get('quantity')?.touched && purchaseOrderForm.get('quantity')?.invalid}">
+                        <div class="invalid-feedback" *ngIf="purchaseOrderForm.get('quantity')?.touched && purchaseOrderForm.get('quantity')?.invalid">
+                            Quantity is required
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Due Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" formControlName="due_date"
+                            [ngClass]="{'is-invalid': purchaseOrderForm.get('due_date')?.touched && purchaseOrderForm.get('due_date')?.invalid}">
+                        <div class="invalid-feedback" *ngIf="purchaseOrderForm.get('due_date')?.touched && purchaseOrderForm.get('due_date')?.invalid">
+                            Due date is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="button" class="btn btn-light me-2" (click)="goBack()">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                    {{ isEditing ? 'Update' : 'Create' }} Purchase Order
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

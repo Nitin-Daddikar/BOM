@@ -1,0 +1,55 @@
+<div class="card">
+    <div class="card-header">
+        <h5>{{ isEditing ? 'Edit' : 'Add' }} Product</h5>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <div *ngIf="loading" class="text-center mb-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Product Information -->
+                <div class="col-md-12">
+                    <h6 class="mb-3">Product Information</h6>
+                    
+                    <div class="form-group mb-3">
+                        <label class="form-label">Product Code <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="code"
+                            [ngClass]="{'is-invalid': productForm.get('code')?.touched && productForm.get('code')?.invalid}">
+                        <div class="invalid-feedback" *ngIf="productForm.get('code')?.touched && productForm.get('code')?.invalid">
+                            Product code is required
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Unit of Measurement (UOM) <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="uom"
+                            [ngClass]="{'is-invalid': productForm.get('uom')?.touched && productForm.get('uom')?.invalid}">
+                        <div class="invalid-feedback" *ngIf="productForm.get('uom')?.touched && productForm.get('uom')?.invalid">
+                            Unit of measurement is required
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Category <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" formControlName="category"
+                            [ngClass]="{'is-invalid': productForm.get('category')?.touched && productForm.get('category')?.invalid}">
+                        <div class="invalid-feedback" *ngIf="productForm.get('category')?.touched && productForm.get('category')?.invalid">
+                            Category is required
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <button type="button" class="btn btn-light me-2" (click)="goBack()">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading">
+                    {{ isEditing ? 'Update' : 'Create' }} Product
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
