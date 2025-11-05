@@ -6,4 +6,6 @@ export const environment = {
   apiUrl: 'https://newapi.swastikarts.com/api',
   useDummayApi: true,
   dummyApiUrl: 'https://api.jsonbin.io/v3/b',
+  masterKey : '',
+  accessKey: ''
 };

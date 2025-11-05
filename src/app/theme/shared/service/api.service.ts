@@ -51,8 +51,8 @@ export class ApiService {
     });
 
     if (environment.useDummayApi) {
-      headers = headers.set('X-Master-Key', environment.masterKey);
-      headers = headers.set('X-Access-Key', environment.accessKey);
+      headers = headers.set('X-Master-Key', (environment as any).masterKey);
+      headers = headers.set('X-Access-Key',  (environment as any).accessKey);
     } else {
       if (token) {
         headers = headers.set('Authorization', `Bearer ${token}`);
